@@ -1,0 +1,4 @@
+nbproject
+config/autoload/local.php
+config/autoload/local.dist.php
+data/cache
