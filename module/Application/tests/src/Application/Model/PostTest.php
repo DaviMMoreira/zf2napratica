@@ -15,7 +15,7 @@ class PostTest extends ModelTestCase {
     
     public function testGetInputFilter(){
         $post = new Post();
-        $if = $post->getINputFilter();
+        $if = $post->getInputFilter();
         $this->assertInstanceOf("Zend\InputFilter\InputFilter", $if);
         return $if;
     }
@@ -23,7 +23,7 @@ class PostTest extends ModelTestCase {
     /**
      * @depends testGetInputFilter
      */
-    public function testInputFilterValid(){
+    public function testInputFilterValid($if){
         $this->assertEquals(4, $if->count());
         
         $this->assertTrue($if->has('id'));
@@ -92,7 +92,7 @@ class PostTest extends ModelTestCase {
         $post = $this->addPost();
         
         $saved = $tableGateway->save($post);
-        $id = $saved->id;
+        $id    = $saved->id;
         
         $deleted = $tableGateway->delete($id);
         $this->assertEquals(1, $deleted);
@@ -103,9 +103,9 @@ class PostTest extends ModelTestCase {
     private function addPost(){
         $post = new Post();
         
-        $post->title = 'Apple compra a Coderockr';
-        $post->description = 'A Apple compra a <b>Coderockr</b><br> ';
-        $post->post_date = date('Y-m-d H:i:s');
+        $post->title        = 'A Apple compra a Coderockr';
+        $post->description  = 'A Apple compra a <b>Coderockr</b><br> ';
+        $post->post_date    = date('Y-m-d H:i:s');
         
         return $post;
     }

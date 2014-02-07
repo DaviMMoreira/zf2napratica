@@ -18,7 +18,7 @@ class Post extends Entity {
     /**
      * @var string
      */
-    protected $tableName = 'post';
+    protected $tableName = 'posts';
     /**
      * @var int
      */
