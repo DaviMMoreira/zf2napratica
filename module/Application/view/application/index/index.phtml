@@ -45,3 +45,10 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+<?php
+    echo $this->paginationControll(
+        $posts,
+        'Sliding',
+        'partials/paginator/control.phtml'
+    );
+?>
