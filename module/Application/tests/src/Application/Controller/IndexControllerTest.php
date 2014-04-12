@@ -88,8 +88,8 @@ class IndexControllerTest extends ControllerTestCase
         $this->assertArrayHasKey('posts', $variables);
         
         $paginator = $variables['posts'];
-        $this->assertInstanceOf(
-            "Zend\Paginator\Paginator", $paginator
+        $this->assertEquals(
+            "Zend\Paginator\Paginator", get_class ( $paginator )
         );
         $posts = $paginator->getCurrentItems()->toArray();
         $this->assertEquals(10, count($posts));
