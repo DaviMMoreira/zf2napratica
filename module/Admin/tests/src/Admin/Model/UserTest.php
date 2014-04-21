@@ -74,4 +74,68 @@ class UserTest extends ModelTestCase
         $this->assertEquals('João das Couves', $user->name);
         $this->assertEquals(1, $user->id);
     }
+    
+    /**
+     * @expectedException Core\Model\EntityException
+     * @expectedExceptionMessage Input inválido: username = 
+     */
+    public function testInsertInvalido()
+    {
+        $user = new User();
+        $user->name = 'Teste';
+        $user->username = '';
+        
+        $saved = $this->getTable('Admin\Model\User')->save($user);
+    }
+    
+    public function testUpdate()
+    {
+        $tableGateway = $this->getTable('Admin\Model\User');
+        
+        $user = $this->addUser();        
+        $id   = $user->id;
+        $this->assertEquals(1, $id);
+        
+        $user = $tableGateway->get($id);
+        
+        $this->assertEquals('João das Couves', $user->name);
+        
+        $user->name = 'José <br>das Couves';
+        $updated = $tableGateway->save($user);
+        
+        
+        $user = $tableGateway->get($id);
+        $this->assertEquals('José das Couves', $user->name);
+    }
+    
+    /**
+     * @expectedException Core\Model\EntityException
+     * @expectedExceptionMessage Could not find row 1
+     */
+    public function testDelete()
+    {
+        $tableGateway = $this->getTable('Admin\Model\User');
+        
+        $user = $this->addUser();
+        $id = $user->id;
+        
+        $deleted = $tableGateway->delete($id);
+        
+        $this->assertEquals(1, $deleted);
+        $user = $tableGateway->get($id);
+    }
+    
+    private function addUser()
+    {
+        $user = new User();
+        $user->username = 'wakawaka';
+        $user->password = md5('wakawaka');
+        $user->name = 'João das Couves';
+        $user->valid = 1;
+        $user->role = 'admin';
+        
+        $saved = $this->getTable('Admin\Model\User')->save($user);
+        
+        return $saved;
+    }
 }
