@@ -1,8 +1,6 @@
 <?php
-
-// module/Skel/conﬁg/module.config.php:
 return array(
-    'controllers' => array( //add module controllers
+    'controllers' => array(
         'invokables' => array(
             'Admin\Controller\Index' => 'Admin\Controller\IndexController',
         ),
@@ -34,7 +32,7 @@ return array(
                             'defaults' => array(
                             ),
                         ),
-                        'child_routes' => array( //permite mandar dados pela url 
+                        'child_routes' => array(
                             'wildcard' => array(
                                 'type' => 'Wildcard'
                             ),
@@ -49,5 +47,16 @@ return array(
         'template_path_stack' => array(
             'admin' => __DIR__ . '/../view',
         ),
-    ),    
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Session' => function($sm){
+                return new Zend\Session\Container('ZF2napratica');
+            },
+            'Admin\Service\Auth' => function($sm){
+                $dbAdapter = $sm->get('dbAdapter');
+                return new Admin\Service\Auth($dbAdapter);
+            }
+        )
+    )
 );
