@@ -12,6 +12,10 @@ use Zend\View\Renderer\PhpRenderer;
  *
  * @author Davi Marcondes Moreira <davi.marcondes.moreira@gmail.com>
  */
+
+/**
+ * @group Controller
+ */
 class AuthControllerTest extends ControllerTestCase
 {
     /**
