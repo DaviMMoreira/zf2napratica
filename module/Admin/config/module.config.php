@@ -9,7 +9,7 @@ return array(
 
     'router' => array(
         'routes' => array(
-            'skel' => array(
+            'admin' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/admin',

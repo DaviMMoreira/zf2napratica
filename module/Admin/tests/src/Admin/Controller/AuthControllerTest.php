@@ -21,7 +21,7 @@ class AuthControllerTest extends ControllerTestCase
     /**
      * @var string
      */
-    protected $controllerFQCN = 'Admin\Controller\AuthController';
+    protected $controllerFQDN = 'Admin\Controller\AuthController';
     /**
      * @var string
      */
@@ -90,8 +90,9 @@ class AuthControllerTest extends ControllerTestCase
         );
         
         $response = $this->controller->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
-        $headers = $responde->getHeaders();
+        $this->assertEquals(302, $response->getStatusCode());
+        
+        $headers = $response->getHeaders();
         $this->assertEquals('Location : /', $headers->get('Location'));
     }
     
@@ -108,7 +109,7 @@ class AuthControllerTest extends ControllerTestCase
         $response = $this->controller->getResponse();
         $this->assertEquals(302, $response->getStatusCode());
         
-        $headers = $responde->getHeaders();
+        $headers = $response->getHeaders();
         $this->assertEquals('Location : /', $headers->get('Location'));
     }
     
