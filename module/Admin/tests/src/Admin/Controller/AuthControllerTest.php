@@ -93,7 +93,7 @@ class AuthControllerTest extends ControllerTestCase
         $this->assertEquals(302, $response->getStatusCode());
         
         $headers = $response->getHeaders();
-        $this->assertEquals('Location : /', $headers->get('Location'));
+        $this->assertEquals('Location: /', $headers->get('Location'));
     }
     
     public function testLogout()
@@ -110,7 +110,7 @@ class AuthControllerTest extends ControllerTestCase
         $this->assertEquals(302, $response->getStatusCode());
         
         $headers = $response->getHeaders();
-        $this->assertEquals('Location : /', $headers->get('Location'));
+        $this->assertEquals('Location: /', $headers->get('Location'));
     }
     
     private function addUser()
