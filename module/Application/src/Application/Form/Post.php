@@ -1,0 +1,53 @@
+<?php
+
+namespace Application\Form;
+
+use Zend\Form\Form;
+
+/**
+ * Description of Post
+ *
+ * @author Davi Marcondes Moreira <davi.marcondes.moreira@gmail.com>
+ */
+class Post extends Form
+{
+    public function __construct()
+    {
+        parent::__construct('post');
+        $this->setAttribute('method', 'post');
+        $this->setAttribute('action', '/admin/index/save');
+        
+        $this->add(array(
+            'name' => 'id',
+            'attributes' => array(
+                'type' => 'hidden'
+            )
+        ));
+        $this->add(array(
+            'name' => 'title',
+            'attributes' => array(
+                'type' => 'text'
+            ),
+            'options' => array(
+                'label' => 'Título'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'decription',
+            'attributes' => array(
+                'type' => 'textarea'
+            ),
+            'options' => array(
+                'label' => 'Texto do Post'
+            ),
+        ));
+        $this->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'Enviar',
+                'id' => 'submitbutton',
+            ),
+        ));
+    }
+}
