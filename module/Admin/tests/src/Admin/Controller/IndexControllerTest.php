@@ -60,7 +60,7 @@ class IndexControllerTest extends ControllerTestCase
         $form = $variables['form'];        
         $id   = $form->get('id');
         $this->assertEquals('id', $id->getName());
-        $this->assertEquals('hidden', $id->getAttribute());        
+        $this->assertEquals('hidden', $id->getAttribute('type'));        
     }
     
     /**
@@ -70,8 +70,8 @@ class IndexControllerTest extends ControllerTestCase
     {
         $postA = $this->addPost();
         
-        $this->routeMatch->setParams('action', 'save');
-        $this->routeMatch->setParams('id', $postA->id);
+        $this->routeMatch->setParam('action', 'save');
+        $this->routeMatch->setParam('id', $postA->id);
         $result = $this->controller->dispatch(
             $this->request,
             $this->response
@@ -98,19 +98,118 @@ class IndexControllerTest extends ControllerTestCase
      */
     public function testSaveActionPostRequest()
     {
-        $this->routeMatch->setParams('action', 'save');
+        $this->routeMatch->setParam('action', 'save');
         
         $this->request->setMethod('post');
-        $this->request->getPost()->set('title', 'A Apple compra a Coderockr');
+        $this->request->getPost()->set('title', 'A Apple compra a Coderockr');        
+        $this->request->getPost()->set(
+            'description', 'A Apple compra a <b>Coderockr</b><br>'
+        );
+        
+        $result = $this->controller->dispatch(
+            $this->request,
+            $this->response
+        );
+        
+        $response = $this->controller->getResponse();
+        $this->assertEquals(302, $response->getStatusCode());
+        
+        $posts = $this->getTable('Application\Model\Post')
+                        ->fetchAll()
+                        ->toArray();
+        $this->assertEquals(1, count($posts));
+        $this->assertEquals(
+            'A Apple compra a Coderockr', $posts[0]['title']
+        );
+        $this->assertNotNull($posts[0]['post_date']);        
     }
     
-    private function addPost(){
+    /**
+     * 
+     */
+    public function testSaveActionInvalidPostRequest()
+    {
+        $this->routeMatch->setParam('action', 'save');
+        
+        $this->request->setMethod('post');
+        $this->request->getPost()->set('title', '');
+        
+        $result = $this->controller->dispatch(
+            $this->request,
+            $this->response
+        );
+        
+        $variables = $result->getVariables();
+        $this->assertInstanceOf('Zend\Form\Form', $variables['form']);
+        
+        $form = $variables['form'];
+        
+        $title             = $form->get('title');
+        $titleErrors       = $title->getMessages();
+        $this->assertEquals(
+            "Value is required and can't be empty",
+            $titleErrors['isEmpty']
+        );
+        
+        $description       = $form->get('description');
+        $descriptionErrors = $description->getMessages();
+        $this->assertEquals(
+            "Value is required and can't be empty",
+            $descriptionErrors['isEmpty']
+        );        
+    }
+    
+    /**
+     * @expectedException Exception
+     * @expectedExceptionMessage Código obrigatório
+     */
+    public function testInvalidDeleteAction()
+    {
+        $post = $this->addPost();
+        
+        $this->routeMatch->setParam('action', 'delete');
+        $result = $this->controller->dispatch(
+            $this->request,
+            $this->response
+        );
+        
+        $response = $this->controller->getResponde();
+    }
+    
+    /**
+     * 
+     */
+    public function testDeleteAction()
+    {
+        $post = $this->addPost();
+        
+        $this->routeMatch->setParam('action', 'delete');
+        $this->routeMatch->setParam('id', $post->id);
+        
+        $result = $this->controller->dispatch(
+            $this->request,
+            $this->response
+        );
+        
+        $response = $this->controller->getResponse();
+        
+        $this->assertEquals(302, $response->getStatusCode());
+        
+        $posts = $this->getTable('Application\Model\Post')
+                        ->fetchAll()
+                        ->toArray();
+        $this->assertEquals(0, count($posts));
+    }
+    
+    private function addPost()
+    {
         $post = new Post();
         
         $post->title        = 'A Apple compra a Coderockr';
         $post->description  = 'A Apple compra a <b>Coderockr</b><br> ';
         $post->post_date    = date('Y-m-d H:i:s');
+        $saved = $this->getTable('Application\Model\Post')->save($post);
         
-        return $post;
+        return $saved;
     }
 }

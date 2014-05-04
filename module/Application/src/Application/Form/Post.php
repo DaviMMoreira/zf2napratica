@@ -33,7 +33,7 @@ class Post extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'decription',
+            'name' => 'description',
             'attributes' => array(
                 'type' => 'textarea'
             ),
