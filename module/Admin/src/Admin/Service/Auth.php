@@ -69,4 +69,18 @@ class Auth extends Service
         
         return true;
     }
+    
+    /**
+     * @return boolean
+     */
+    public function authorize()
+    {
+        $auth = new AuthenticationService();
+        if ( $auth->hasIdentity() )
+        {
+            return true;
+        }
+        
+        return false;
+    }
 }
