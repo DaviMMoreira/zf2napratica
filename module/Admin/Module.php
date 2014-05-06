@@ -53,15 +53,12 @@ class Module
         
         $moduleName     = $routeMatch->getParam('module');
         $controllerName = $routeMatch->getParam('controller');
+        $actionName     = $routeMatch->getParam('action');
         
-        if ( $moduleName == 'admin' && $controllerName != 'Admin\Controller\Auth' )
+        $authService = $di->get('Admin\Service\Auth');
+        if (!$authService->authorize($moduleName, $controllerName, $actionName))
         {
-            $authService = $di->get('Admin\Service\Auth');
-            if ( !$authService->authorize() )
-            {
-                $redirect = $event->getTarget()->redirect();
-                $redirect->toUrl('/admin/auth');
-            }
+            throw new \Exception('Você não tem permissão para acessar esse recurso.');
         }
         
         return true;
