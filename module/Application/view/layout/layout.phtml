@@ -47,7 +47,14 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/admin/auth/index">Entrar</a>
+                                <?php
+                                    $user = $this->session()->offsetGet('user');
+                                    if ( $user ) {
+                                ?>
+                                          <a href="/admin/auth/logout"><?php echo $this->translate('Sair');?></a>
+                                <?php } else { ?>
+                                          <a href="/admin/auth/index"><?php echo $this->translate('Entrar');?></a>                                        
+                                <?php } ?>                                
                             </li>
                         </ul>
                     </div><!--/.nav-collapse -->
