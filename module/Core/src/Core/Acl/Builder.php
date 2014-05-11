@@ -24,7 +24,7 @@ class Builder implements ServiceManagerAwareInterface
     /**
      * @param \Zend\ServiceManager\ServiceManager $serviceManager
      */
-    public function setServiceManager(Zend\ServiceManager\ServiceManager $serviceManager)
+    public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
     }
