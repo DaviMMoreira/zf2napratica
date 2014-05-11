@@ -6,7 +6,6 @@ return array(
             'Admin\Controller\Auth' => 'Admin\Controller\AuthController',
         ),
     ),
-
     'router' => array(
         'routes' => array(
             'admin' => array(
@@ -57,7 +56,24 @@ return array(
             'Admin\Service\Auth' => function($sm){
                 $dbAdapter = $sm->get('dbAdapter');
                 return new Admin\Service\Auth($dbAdapter);
-            }
+            },
+            'Cache' => function($sm){
+                $config = include __DIR__ . '/../../../config/application.config.php';
+                
+                $cache = Zend\Cache\StorageFactory::factory(
+                    array(
+                        'adapter' => $config['cache']['adapter'],
+                        'plugins' => array(
+                            'exception_handler' => array(
+                                'throw_exceptions' => false
+                            ),
+                            'Serializer'
+                        ),
+                    )
+                );
+                
+                return $cache;
+            },
         )
     )
 );

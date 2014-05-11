@@ -3,7 +3,6 @@ return array(
     'modules' => array(
         'Application',
         'Core',
-        //'Skel'
         'Admin',
     ),
     'module_listener_options' => array(
@@ -14,5 +13,8 @@ return array(
             './module',
             './vendor',
         ),
+    ),
+    'cache' => array(
+        'adapter' => 'memory'
     ),
 );
